@@ -4,42 +4,42 @@ import "./NavigationBar.css";
 
 const NavigationBar = () => {
     const navbarOptions = (
-        <div className="flex lg:flex-row flex-col gap-4">
+        <div className="flex lg:flex-row flex-col gap-2">
             <NavLink
                 to={"/"}
-                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-4 rounded-xl"
+                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl"
             >
                 HOME
             </NavLink>
             <NavLink
-                to={"/contact"}
-                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-4 rounded-xl"
-            >
-                CONTACT US
-            </NavLink>
-            <NavLink
-                to={"/dashboard"}
-                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-4 rounded-xl"
-            >
-                DASHBOARD
-            </NavLink>
-            <NavLink
                 to={"/menu"}
-                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-4 rounded-xl"
+                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl"
             >
                 OUR MENU
             </NavLink>
             <NavLink
-                to={"/shop"}
-                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-4 rounded-xl"
+                to={"/shop/salad"}
+                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl"
             >
                 OUR SHOP
+            </NavLink>
+            <NavLink
+                to={"/dashboard"}
+                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl"
+            >
+                DASHBOARD
+            </NavLink>
+            <NavLink
+                to={"/contact"}
+                className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl"
+            >
+                CONTACT US
             </NavLink>
         </div>
     );
     return (
         <div>
-            <div className="navbar bg-black bg-opacity-60 fixed z-10  text-white ">
+            <div className="navbar bg-black bg-opacity-60 fixed h-fit py-0 md:py-1 z-10  text-white ">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -78,7 +78,14 @@ const NavigationBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn">Get started</a>
+                    <div>
+                        <NavLink
+                            to={"/login"}
+                            className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl md:mr-10 mr-5"
+                        >
+                            Login
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         </div>
