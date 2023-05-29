@@ -1,21 +1,77 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Banner from "../../assets/others/authentication.png";
 import loginPoster from "../../assets/others/authentication2.png";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Register = () => {
+    const { user, createUser, updateUser, googleLogin, logOut } =
+        useContext(AuthContext);
+    const navigate = useNavigate();
     // Handle Submit login
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const form = event.target;
-        const name = form.name.value;
-        const email = form.email.value;
-        const password = form.password.value;
-        console.log(email, password);
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const onSubmit = ({ name, email, password }) => {
+        console.log(name, email, password);
+        createUser(email, password)
+            .then((result) => {
+                const user = result.user;
+                // console.log(user);
+                Swal.fire(
+                    "Profile Created Successfully",
+                    "Please Login",
+                    "success"
+                );
+                updateUser(name)
+                    .then((result) => {
+                        // console.log("Update User name successfull");
+                    })
+                    .catch((error) => {
+                        console.log(error.message);
+                    });
 
+                logOut()
+                    .then((result) => {})
+                    .catch((error) => {});
+
+                navigate("/login");
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+    };
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then((result) => {
+                // console.log(result.user);
+                Swal.fire({
+                    title: "User Login Successful",
+                    showClass: {
+                        popup: "animate__animated animate__fadeInDown",
+                    },
+                    hideClass: {
+                        popup: "animate__animated animate__fadeOutUp",
+                    },
+                });
+
+                navigate("/home");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+    });
     return (
         <div
             style={{ backgroundImage: `url(${Banner})` }}
@@ -28,8 +84,11 @@ const Register = () => {
                 <div className="md:w-1/2  ">
                     <img className="w-full" src={loginPoster} alt="" />
                 </div>
-                <form onSubmit={handleSubmit} className="md:w-1/2 p-4 ">
-                    <div className=" max-w-md ">
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="md:w-1/2 p-4 md:pl-20 "
+                >
+                    <div className=" max-w-md min-w-[320px] ">
                         <h1 className="text-center font-semibold text-2xl md:text-4xl py-7">
                             Sign Up
                         </h1>
@@ -40,10 +99,16 @@ const Register = () => {
                                 </label>
                                 <input
                                     type="text"
+                                    {...register("name", { required: true })}
                                     name="name"
                                     placeholder="name"
                                     className="input input-bordered"
                                 />
+                                {errors.name && (
+                                    <span className="text-xs text-red-600 mt-3">
+                                        Name is required
+                                    </span>
+                                )}
                             </div>
                             <div className="form-control">
                                 <label className="label">
@@ -52,9 +117,15 @@ const Register = () => {
                                 <input
                                     type="email"
                                     name="email"
+                                    {...register("email", { required: true })}
                                     placeholder="email"
                                     className="input input-bordered"
                                 />
+                                {errors.email && (
+                                    <span className="text-xs text-red-600 mt-3">
+                                        Email is required
+                                    </span>
+                                )}
                             </div>
                             <div className="form-control">
                                 <label className="label">
@@ -63,17 +134,23 @@ const Register = () => {
                                 <input
                                     type="password"
                                     name="password"
+                                    {...register("password", {
+                                        pattern:
+                                            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,}/,
+                                        minLength: 6,
+                                        required: true,
+                                    })}
                                     placeholder="password"
                                     className="input input-bordered"
                                 />
-                                <label className="label">
-                                    <a
-                                        href="#"
-                                        className="label-text-alt link link-hover"
-                                    >
-                                        Forgot password?
-                                    </a>
-                                </label>
+                                {(errors.password?.type === "pattern" ||
+                                    errors.password?.type === "minLength") && (
+                                    <span className="text-xs text-red-600 mt-3">
+                                        Password should have 1 uppercase, 1
+                                        lowercase, 1 digit, and 1 symbol &
+                                        minimum 6 characters.
+                                    </span>
+                                )}
                             </div>
 
                             <div className="form-control mt-6">
@@ -97,7 +174,10 @@ const Register = () => {
                                 </small>
                                 <div className="my-3 flex gap-4">
                                     <FaFacebook className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"></FaFacebook>
-                                    <FaGoogle className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"></FaGoogle>
+                                    <FaGoogle
+                                        onClick={handleGoogleLogin}
+                                        className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"
+                                    ></FaGoogle>
                                     <FaGithub className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"></FaGithub>
                                 </div>
                             </div>

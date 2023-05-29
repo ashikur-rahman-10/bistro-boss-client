@@ -8,16 +8,30 @@ import {
     validateCaptcha,
 } from "react-simple-captcha";
 import { Toaster, toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { Button } from "react-daisyui";
+import Swal from "sweetalert2";
 
 const Login = () => {
     const [disabled, setDisabled] = useState(true);
+    const [error, setError] = useState("");
     const capchaRef = useRef(null);
+    const { googleLogin, userLogin } = useContext(AuthContext);
+    const location = useLocation();
+    const from = location.state?.pathname || "/home";
+    const navigate = useNavigate();
+    // console.log(from);
 
     useEffect(() => {
         loadCaptchaEnginge(6);
     }, []);
+
+    const fireAllert = () => {
+        Swal.fire("The Internet?", "", "question");
+    };
 
     const handleCapcha = () => {
         console.log(capchaRef.current.value);
@@ -35,9 +49,36 @@ const Login = () => {
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password);
+        // console.log(email, password);
+        userLogin(email, password)
+            .then((result) => {
+                // console.log(result.user);
+                Swal.fire("Login Successfull", "", "success");
+                event.target.reset();
+                navigate(from);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
+    // Google Login
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then((result) => {
+                // console.log(result.user);
+                Swal.fire("Login Successfull", "", "success");
+                navigate(from);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+    });
     return (
         <div
             style={{ backgroundImage: `url(${Banner})` }}
@@ -47,11 +88,11 @@ const Login = () => {
                 <title>Bistro / Login</title>
             </Helmet>
             <div className="flex  flex-col-reverse  md:flex-row  shadow-2xl  w-full h-full py-12 items-center justify-center  gap-10">
-                <div className="md:w-1/2  ">
+                <div className="md:w-1/2 flex flex-col justify-center items-center  ">
                     <img className="w-full" src={loginPoster} alt="" />
                 </div>
                 <form onSubmit={handleSubmit} className="md:w-1/2 p-4 ">
-                    <div className=" max-w-md ">
+                    <div className=" max-w-md  min-w-[320px]">
                         <h1 className="text-center font-semibold text-2xl md:text-4xl py-7">
                             Login
                         </h1>
@@ -121,7 +162,10 @@ const Login = () => {
                                 </small>
                                 <div className="my-3 flex gap-4">
                                     <FaFacebook className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"></FaFacebook>
-                                    <FaGoogle className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"></FaGoogle>
+                                    <FaGoogle
+                                        onClick={handleGoogleLogin}
+                                        className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"
+                                    ></FaGoogle>
                                     <FaGithub className="p-2 cursor-pointer text-4xl border-2 border-black rounded-full hover:text-blue-600 hover:border-blue-600"></FaGithub>
                                 </div>
                             </div>

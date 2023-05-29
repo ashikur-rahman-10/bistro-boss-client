@@ -10,6 +10,7 @@ import OurShops from "../Pages/OurShops/OurShops/OurShops";
 import Login from "../Pages/LoginOrRegister/Login";
 import Register from "../Pages/LoginOrRegister/Register";
 import LoginLayouts from "../Layouts/LoginLayouts";
+import PrivateRoute from "./PrivateRoute";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -44,7 +45,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/shop/:category",
-                element: <OurShops></OurShops>,
+                element: (
+                    <PrivateRoute>
+                        <OurShops></OurShops>
+                    </PrivateRoute>
+                ),
             },
         ],
     },
