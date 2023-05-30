@@ -2,46 +2,40 @@ import React, { useEffect, useRef, useState } from "react";
 import Banner from "../../assets/others/authentication.png";
 import loginPoster from "../../assets/others/authentication2.png";
 import { Helmet } from "react-helmet-async";
-import {
-    loadCaptchaEnginge,
-    LoadCanvasTemplate,
-    validateCaptcha,
-} from "react-simple-captcha";
+
 import { Toaster, toast } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
-import { Button } from "react-daisyui";
-import Swal from "sweetalert2";
 
 const Login = () => {
     const [disabled, setDisabled] = useState(true);
     const [error, setError] = useState("");
-    const capchaRef = useRef(null);
+
     const { googleLogin, userLogin } = useContext(AuthContext);
     const location = useLocation();
     const from = location.state?.pathname || "/home";
     const navigate = useNavigate();
     // console.log(from);
 
-    useEffect(() => {
-        loadCaptchaEnginge(6);
-    }, []);
+    // useEffect(() => {
+    //     loadCaptchaEnginge(6);
+    // }, []);
 
     const fireAllert = () => {
         Swal.fire("The Internet?", "", "question");
     };
 
-    const handleCapcha = () => {
-        console.log(capchaRef.current.value);
-        if (validateCaptcha(capchaRef.current.value) === true) {
-            setDisabled(false);
-        } else {
-            toast.error("The Captcha is not matched try again!");
-            setDisabled(true);
-        }
-    };
+    // const handleCapcha = () => {
+    //     console.log(capchaRef.current.value);
+    //     if (validateCaptcha(capchaRef.current.value) === true) {
+    //         setDisabled(false);
+    //     } else {
+    //         toast.error("The Captcha is not matched try again!");
+    //         setDisabled(true);
+    //     }
+    // };
 
     // Handle Submit login
     const handleSubmit = (event) => {
@@ -53,7 +47,7 @@ const Login = () => {
         userLogin(email, password)
             .then((result) => {
                 // console.log(result.user);
-                Swal.fire("Login Successfull", "", "success");
+                toast.success("User Login Successful");
                 event.target.reset();
                 navigate(from);
             })
@@ -66,9 +60,8 @@ const Login = () => {
     const handleGoogleLogin = () => {
         googleLogin()
             .then((result) => {
-                // console.log(result.user);
-                Swal.fire("Login Successfull", "", "success");
                 navigate(from);
+                toast.success("User Login Successful");
             })
             .catch((error) => {
                 console.log(error);
@@ -127,7 +120,7 @@ const Login = () => {
                                     </a>
                                 </label>
                             </div>
-                            <div className="form-control ">
+                            {/* <div className="form-control ">
                                 <label className="label">
                                     <LoadCanvasTemplate />
                                 </label>
@@ -139,11 +132,11 @@ const Login = () => {
                                     placeholder="type text avobe"
                                     className="input input-bordered"
                                 />
-                            </div>
+                            </div> */}
                             <div className="form-control mt-6">
                                 <button
                                     type="submit"
-                                    disabled={disabled}
+                                    // disabled={disabled}
                                     className="btn btn-primary w-full bg-[#DBB984] hover:bg-[#eab560] border-none"
                                 >
                                     Login

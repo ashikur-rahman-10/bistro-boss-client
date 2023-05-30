@@ -6,11 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
-import Swal from "sweetalert2";
 
 const Register = () => {
-    const { user, createUser, updateUser, googleLogin, logOut } =
-        useContext(AuthContext);
+    const { user, createUser, updateUser, googleLogin, logOut } = useContext(
+        AuthContext
+    );
     const navigate = useNavigate();
     // Handle Submit login
     const {
@@ -24,11 +24,7 @@ const Register = () => {
             .then((result) => {
                 const user = result.user;
                 // console.log(user);
-                Swal.fire(
-                    "Profile Created Successfully",
-                    "Please Login",
-                    "success"
-                );
+
                 updateUser(name)
                     .then((result) => {
                         // console.log("Update User name successfull");
@@ -50,18 +46,7 @@ const Register = () => {
     const handleGoogleLogin = () => {
         googleLogin()
             .then((result) => {
-                // console.log(result.user);
-                Swal.fire({
-                    title: "User Login Successful",
-                    showClass: {
-                        popup: "animate__animated animate__fadeInDown",
-                    },
-                    hideClass: {
-                        popup: "animate__animated animate__fadeOutUp",
-                    },
-                });
-
-                navigate("/home");
+                navigate("/");
             })
             .catch((error) => {
                 console.log(error);
@@ -72,6 +57,7 @@ const Register = () => {
         left: 0,
         behavior: "smooth",
     });
+
     return (
         <div
             style={{ backgroundImage: `url(${Banner})` }}
@@ -135,8 +121,7 @@ const Register = () => {
                                     type="password"
                                     name="password"
                                     {...register("password", {
-                                        pattern:
-                                            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,}/,
+                                        pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,}/,
                                         minLength: 6,
                                         required: true,
                                     })}

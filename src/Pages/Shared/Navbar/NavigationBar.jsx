@@ -4,9 +4,12 @@ import "./NavigationBar.css";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import avatar from "../../../assets/others/profile.png";
 import { TailSpin } from "react-loader-spinner";
+import cartImg from "../../../assets/icon/cartIcon.png";
+import UseCart from "../../../Hooks/UseCart";
 
 const NavigationBar = () => {
     const { user, logOut, loading } = useContext(AuthContext);
+    const [cart] = UseCart();
 
     if (loading) {
         return (
@@ -35,7 +38,7 @@ const NavigationBar = () => {
 
     // Navbar options
     const navbarOptions = (
-        <div className="flex lg:flex-row flex-col gap-2">
+        <div className="flex lg:flex-row md:items-center  flex-col gap-2">
             <NavLink
                 to={"/home"}
                 className="hover:text-orange-500 hover:bg-slate-200  py-2 px-3 rounded-xl"
@@ -109,6 +112,21 @@ const NavigationBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+                    {user && (
+                        <NavLink
+                            to={"myCart"}
+                            className="hover:text-orange-500 w-12 relative rounded-full mr-5 lg:mr-10"
+                        >
+                            <img
+                                className="w-12 hover:saturate-0"
+                                src={cartImg}
+                                alt=""
+                            />
+                            <span className="rounded-full  top-5 right-0 border-[#FF0000] font-semibold z-10 w-2 text-xs badge absolute badge-lg bg-[#FF0000]">
+                                {cart.length}
+                            </span>
+                        </NavLink>
+                    )}
                     {user ? (
                         <div className="dropdown dropdown-end md:mr-4">
                             <label

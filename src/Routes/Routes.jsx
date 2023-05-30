@@ -11,6 +11,9 @@ import Login from "../Pages/LoginOrRegister/Login";
 import Register from "../Pages/LoginOrRegister/Register";
 import LoginLayouts from "../Layouts/LoginLayouts";
 import PrivateRoute from "./PrivateRoute";
+import DashBoard from "../Layouts/DashBoard/DashBoard";
+import MyCart from "../Pages/DashBoard/MyCart/MyCart";
+import UserHome from "../Pages/DashBoard/UserHome/UserHome";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -45,11 +48,21 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/shop/:category",
-                element: (
-                    <PrivateRoute>
-                        <OurShops></OurShops>
-                    </PrivateRoute>
-                ),
+                element: <OurShops></OurShops>,
+            },
+        ],
+    },
+    {
+        path: "/",
+        element: <DashBoard></DashBoard>,
+        children: [
+            {
+                path: "/dashboard",
+                element: <UserHome></UserHome>,
+            },
+            {
+                path: "/myCart",
+                element: <MyCart></MyCart>,
             },
         ],
     },
