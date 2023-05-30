@@ -4,22 +4,43 @@ import UseCart from "../../../Hooks/UseCart";
 import ItemRow from "../../../Components/ItemRow/ItemRow";
 import SectionTitle from "../../../Components/SectionTitle/SectionTitle";
 import { Toaster, toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const MyCart = () => {
     const [cart, refetch] = UseCart();
     const total = cart.reduce((sum, item) => item.price + sum, 0);
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:5000/carts/${id}`, {
-            method: "DELETE",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.deletedCount > 0) {
-                    refetch();
-                    toast.success("Item Removed from Cart");
-                }
-            });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(
+                    `https://bistro-boss-server-iota.vercel.app/carts/${id}`,
+                    {
+                        method: "DELETE",
+                    }
+                )
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire(
+                                "Deleted!",
+                                "Your file has been deleted.",
+                                "success"
+                            );
+                            // toast.success("Item Removed from Cart");
+                        }
+                    });
+            }
+        });
     };
     return (
         <div className="bg-[#F3F3F3] drawer-content">

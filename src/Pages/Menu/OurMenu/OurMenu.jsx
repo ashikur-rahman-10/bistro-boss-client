@@ -10,8 +10,6 @@ import { TailSpin } from "react-loader-spinner";
 const OurMenu = () => {
     const { loading } = UseMenu();
 
-    console.log(loading);
-
     if (loading) {
         return (
             <div className="bg-white h-screen w-full flex justify-center items-center z-40">

@@ -6,11 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Register = () => {
-    const { user, createUser, updateUser, googleLogin, logOut } = useContext(
-        AuthContext
-    );
+    const { user, createUser, updateUser, googleLogin, logOut } =
+        useContext(AuthContext);
     const navigate = useNavigate();
     // Handle Submit login
     const {
@@ -24,7 +24,12 @@ const Register = () => {
             .then((result) => {
                 const user = result.user;
                 // console.log(user);
-
+                Swal.fire({
+                    icon: "success",
+                    title: "Login User Successful",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 updateUser(name)
                     .then((result) => {
                         // console.log("Update User name successfull");
@@ -46,6 +51,12 @@ const Register = () => {
     const handleGoogleLogin = () => {
         googleLogin()
             .then((result) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Login User Successful",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 navigate("/");
             })
             .catch((error) => {
@@ -121,7 +132,8 @@ const Register = () => {
                                     type="password"
                                     name="password"
                                     {...register("password", {
-                                        pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,}/,
+                                        pattern:
+                                            /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{6,}/,
                                         minLength: 6,
                                         required: true,
                                     })}

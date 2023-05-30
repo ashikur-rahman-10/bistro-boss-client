@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Login = () => {
     const [disabled, setDisabled] = useState(true);
@@ -47,7 +48,13 @@ const Login = () => {
         userLogin(email, password)
             .then((result) => {
                 // console.log(result.user);
-                toast.success("User Login Successful");
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Login User Successful",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 event.target.reset();
                 navigate(from);
             })
@@ -60,8 +67,13 @@ const Login = () => {
     const handleGoogleLogin = () => {
         googleLogin()
             .then((result) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Login User Successful",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 navigate(from);
-                toast.success("User Login Successful");
             })
             .catch((error) => {
                 console.log(error);
