@@ -25,7 +25,7 @@ const ItemCard = ({ item }) => {
                 price,
                 email: user.email,
             };
-            fetch("https://bistro-boss-server-iota.vercel.app/carts", {
+            fetch(" http://localhost:5000/carts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -40,19 +40,30 @@ const ItemCard = ({ item }) => {
                     }
                 });
         } else {
-            toast.custom(
-                <div className="bg-base-100 w-60 h-40 flex flex-col border shadow-xl justify-center items-center rounded-xl">
-                    <p className=" font-semibold text-red-500">
-                        Please Login to add Cart
-                    </p>
-                    <button
-                        className="mt-5 cursor-pointer hover:bg-slate-200 text-info outline outline-info px-4 py-1 rounded-lg "
-                        onClick={navigateToLogin}
-                    >
-                        Login
-                    </button>
-                </div>
-            );
+            // toast.custom(
+            //     <div className="bg-base-100 w-60 h-40 flex flex-col border shadow-xl justify-center items-center rounded-xl">
+            //         <p className=" font-semibold text-red-500">
+            //             Please Login to add Cart
+            //         </p>
+            //         <button
+            //             className="mt-5 cursor-pointer hover:bg-slate-200 text-info outline outline-info px-4 py-1 rounded-lg "
+            //             onClick={navigateToLogin}
+            //         >
+            //             Login
+            //         </button>
+            //     </div>
+            // );
+            Swal.fire({
+                title: "Please Login",
+                text: "You won't be able to add cart without Login",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Login",
+            }).then((result) => {
+                navigate("/login", { state: location });
+            });
         }
     };
 

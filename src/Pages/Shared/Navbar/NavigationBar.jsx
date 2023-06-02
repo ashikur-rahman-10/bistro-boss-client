@@ -3,30 +3,12 @@ import { Link, NavLink } from "react-router-dom";
 import "./NavigationBar.css";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import avatar from "../../../assets/others/profile.png";
-import { TailSpin } from "react-loader-spinner";
 import cartImg from "../../../assets/icon/cartIcon.png";
 import UseCart from "../../../Hooks/UseCart";
 
 const NavigationBar = () => {
     const { user, logOut, loading } = useContext(AuthContext);
     const [cart] = UseCart();
-
-    if (loading) {
-        return (
-            <div className="bg-white h-screen w-full flex justify-center items-center z-40">
-                <TailSpin
-                    height="80"
-                    width="80"
-                    color="#4fa94d"
-                    ariaLabel="tail-spin-loading"
-                    radius="1"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                />
-            </div>
-        );
-    }
 
     // Handle Logout
 
@@ -114,7 +96,7 @@ const NavigationBar = () => {
                 <div className="navbar-end">
                     {user && (
                         <NavLink
-                            to={"myCart"}
+                            to={"/dashboard/myCart"}
                             className="hover:text-orange-500 w-12 relative rounded-full mr-5 lg:mr-10"
                         >
                             <img
@@ -123,7 +105,7 @@ const NavigationBar = () => {
                                 alt=""
                             />
                             <span className="rounded-full  top-5 right-0 border-[#FF0000] font-semibold z-10 w-2 text-xs badge absolute badge-lg bg-[#FF0000]">
-                                {cart.length}
+                                {cart && cart.length}
                             </span>
                         </NavLink>
                     )}

@@ -67,12 +67,27 @@ const Login = () => {
     const handleGoogleLogin = () => {
         googleLogin()
             .then((result) => {
+                const loggedUser = result.user;
                 Swal.fire({
                     icon: "success",
                     title: "Login User Successful",
                     showConfirmButton: false,
                     timer: 1500,
                 });
+                const savedUser = {
+                    name: loggedUser.displayName,
+                    email: loggedUser.email,
+                };
+
+                fetch(" http://localhost:5000/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(savedUser),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {});
                 navigate(from);
             })
             .catch((error) => {

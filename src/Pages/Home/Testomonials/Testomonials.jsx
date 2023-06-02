@@ -11,7 +11,7 @@ import { Pagination, Navigation } from "swiper";
 const Testomonials = () => {
     const [reviews, setRivews] = useState([]);
     useEffect(() => {
-        fetch("https://bistro-boss-server-iota.vercel.app/reviews")
+        fetch(" http://localhost:5000/reviews")
             .then((res) => res.json())
             .then((data) => setRivews(data));
     }, []);

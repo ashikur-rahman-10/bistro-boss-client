@@ -13,7 +13,7 @@ const OurItems = () => {
 
     const { items } = UseMenu();
 
-    const offeredItems = items.filter((item) => item.category == "offered");
+    // const offeredItems = items.filter((item) => item.category == "offered");
     const dessertItems = items.filter((item) => item.category == "dessert");
     const pizzaItems = items.filter((item) => item.category == "pizza");
     const saladItems = items.filter((item) => item.category == "salad");

@@ -4,7 +4,7 @@ const UseMenu = () => {
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
     useEffect(() => {
-        fetch("https://bistro-boss-server-iota.vercel.app/menu")
+        fetch(" http://localhost:5000/menu")
             .then((res) => res.json())
             .then((data) => {
                 setItems(data);

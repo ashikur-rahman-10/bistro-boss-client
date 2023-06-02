@@ -23,16 +23,28 @@ const Register = () => {
         createUser(email, password)
             .then((result) => {
                 const user = result.user;
-                // console.log(user);
-                Swal.fire({
-                    icon: "success",
-                    title: "Login User Successful",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
                 updateUser(name)
                     .then((result) => {
-                        // console.log("Update User name successfull");
+                        const savedUser = { name, email };
+                        fetch(" http://localhost:5000/users", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(savedUser),
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data.acknowledged) {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Login User Successful",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    });
+                                }
+                            });
+                        navigate("/login");
                     })
                     .catch((error) => {
                         console.log(error.message);
@@ -41,8 +53,6 @@ const Register = () => {
                 logOut()
                     .then((result) => {})
                     .catch((error) => {});
-
-                navigate("/login");
             })
             .catch((error) => {
                 console.log(error.message);
@@ -51,12 +61,27 @@ const Register = () => {
     const handleGoogleLogin = () => {
         googleLogin()
             .then((result) => {
+                const loggedUser = result.user;
                 Swal.fire({
                     icon: "success",
                     title: "Login User Successful",
                     showConfirmButton: false,
                     timer: 1500,
                 });
+                const savedUser = {
+                    name: loggedUser.displayName,
+                    email: loggedUser.email,
+                };
+
+                fetch(" http://localhost:5000/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(savedUser),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {});
                 navigate("/");
             })
             .catch((error) => {

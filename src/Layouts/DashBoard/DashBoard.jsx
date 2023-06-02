@@ -9,11 +9,17 @@ import {
     FaHome,
     FaShoppingBag,
     FaWallet,
+    FaUtensils,
+    FaUsers,
 } from "react-icons/fa";
 import "./DashBoard.css";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import UseAdmin from "../../Hooks/UseAdmin";
 
 const DashBoard = () => {
+    const [isAdmin] = UseAdmin();
+    const admin = isAdmin?.result?.admin;
+
     return (
         <div>
             <div className="drawer  drawer-mobile">
@@ -38,7 +44,7 @@ const DashBoard = () => {
                         className="drawer-overlay"
                     ></label>
 
-                    <ul className="menu  bg-[#D1A054] p-4 w-80 uppercase text-base-content">
+                    <ul className="menu  bg-[#D1A054] p-4 w-80 h-screen uppercase text-base-content">
                         <Link className="mb-10" to={"/"}>
                             <div>
                                 <h2 className="text-2xl font-bold">
@@ -49,43 +55,75 @@ const DashBoard = () => {
                                 </p>
                             </div>
                         </Link>
-                        <li>
-                            <NavLink to={"/dashboard"}>
-                                <FaHome></FaHome> User Home
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={"/reservation"}>
-                                <FaCalendarAlt></FaCalendarAlt> Reservation
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={"/myCart"}>
-                                <FaCartPlus></FaCartPlus> My cart
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={"/paymentHistory"}>
-                                <FaWallet></FaWallet> Payemnt History
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={"/addReviews"}>
-                                <FaCommentAlt></FaCommentAlt> Add Review
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={"/bookngs"}>
+                        {admin ? (
+                            <>
                                 {" "}
-                                <FaBook></FaBook> My bookings
-                            </NavLink>
-                        </li>
-
-                        <div className="divider my-10"></div>
+                                <li>
+                                    <NavLink to={"/dashboard"}>
+                                        <FaHome></FaHome> Admin Home
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"reservation"}>
+                                        <FaUtensils></FaUtensils> Add Item
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"myCart"}>
+                                        <FaBars></FaBars> Manage Item
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"paymentHistory"}>
+                                        <FaBook></FaBook> Manage Bookings
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"allusers"}>
+                                        <FaUsers></FaUsers> All Users
+                                    </NavLink>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                {" "}
+                                <li>
+                                    <NavLink to={"/dashboard"}>
+                                        <FaHome></FaHome> User Home
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"reservation"}>
+                                        <FaCalendarAlt></FaCalendarAlt>{" "}
+                                        Reservation
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"myCart"}>
+                                        <FaCartPlus></FaCartPlus> My cart
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"paymentHistory"}>
+                                        <FaWallet></FaWallet> Payemnt History
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"addReviews"}>
+                                        <FaCommentAlt></FaCommentAlt> Add Review
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={"bookngs"}>
+                                        {" "}
+                                        <FaBook></FaBook> My bookings
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
+                        <div className="divider "></div>
                         <li>
-                            <NavLink to={"/"}>
-                                <FaHome></FaHome> Home
-                            </NavLink>
+                            <NavLink to={"/"}></NavLink>
                         </li>
                         <li>
                             <NavLink to={"/menu"}>
