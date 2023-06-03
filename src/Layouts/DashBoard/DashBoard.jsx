@@ -18,7 +18,6 @@ import UseAdmin from "../../Hooks/UseAdmin";
 
 const DashBoard = () => {
     const [isAdmin] = UseAdmin();
-    const admin = isAdmin?.result?.admin;
 
     return (
         <div>
@@ -55,7 +54,7 @@ const DashBoard = () => {
                                 </p>
                             </div>
                         </Link>
-                        {admin ? (
+                        {isAdmin ? (
                             <>
                                 {" "}
                                 <li>
@@ -64,12 +63,12 @@ const DashBoard = () => {
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to={"reservation"}>
+                                    <NavLink to={"addItem"}>
                                         <FaUtensils></FaUtensils> Add Item
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to={"myCart"}>
+                                    <NavLink to={"manageItems"}>
                                         <FaBars></FaBars> Manage Item
                                     </NavLink>
                                 </li>

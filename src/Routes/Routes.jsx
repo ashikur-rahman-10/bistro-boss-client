@@ -15,7 +15,15 @@ import DashBoard from "../Layouts/DashBoard/DashBoard";
 import MyCart from "../Pages/DashBoard/MyCart/MyCart";
 import UserHome from "../Pages/DashBoard/UserHome/UserHome";
 import AllUsers from "../Pages/DashBoard/AllUsers/AllUsers";
+import AdminOnlyRoutes from "./AdminOnlyRoutes";
+import NotFound from "../Pages/NotFound/NotFound";
+import AddAnItem from "../Pages/DashBoard/AddAnItem/AddAnItem";
+import ManageItems from "../Pages/DashBoard/ManageItem/ManageItems";
 export const router = createBrowserRouter([
+    {
+        path: "/*",
+        element: <NotFound></NotFound>,
+    },
     {
         path: "/",
         element: <LoginLayouts></LoginLayouts>,
@@ -72,7 +80,28 @@ export const router = createBrowserRouter([
             },
             {
                 path: "allusers",
-                element: <AllUsers></AllUsers>,
+                element: (
+                    <AdminOnlyRoutes>
+                        {" "}
+                        <AllUsers></AllUsers>
+                    </AdminOnlyRoutes>
+                ),
+            },
+            {
+                path: "addItem",
+                element: (
+                    <AdminOnlyRoutes>
+                        <AddAnItem></AddAnItem>
+                    </AdminOnlyRoutes>
+                ),
+            },
+            {
+                path: "manageItems",
+                element: (
+                    <AdminOnlyRoutes>
+                        <ManageItems></ManageItems>
+                    </AdminOnlyRoutes>
+                ),
             },
         ],
     },
